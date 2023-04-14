@@ -61,20 +61,20 @@ def on_release_key(_):
 
     # transcribe audio
     try:
-        eng_speech = speech_to_text(MIC_AUDIO_PATH, 'transcribe', 'en')
+        pt_speech = speech_to_text(MIC_AUDIO_PATH, 'transcribe', 'pt-BR')
     except requests.exceptions.JSONDecodeError:
         print('Too many requests to process at once')
         return
 
-    if eng_speech:
+    if pt_speech:
 
         if USE_DEEPL:
-            translated_speech = translator.translate_text(eng_speech, target_lang=TARGET_LANGUAGE)
+            translated_speech = translator.translate_text(pt_speech, target_lang=TARGET_LANGUAGE)
         else:
-            translated_speech = translator.translate(eng_speech, dest=TARGET_LANGUAGE).text
+            translated_speech = translator.translate(pt_speech, dest=TARGET_LANGUAGE).text
 
         if LOGGING:
-            print(f'English: {eng_speech}')
+            print(f'Portuguese: {pt_speech}')
             print(f'Translated: {translated_speech}')
 
         speak(translated_speech, TARGET_LANGUAGE)

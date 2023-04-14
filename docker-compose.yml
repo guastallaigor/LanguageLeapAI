@@ -1,20 +1,31 @@
-version: '3'
+version: "3"
 
 services:
-
-  whisper:
-    image: onerahmet/openai-whisper-asr-webservice:latest-gpu
-    environment:
-      ASR_MODEL: small
+  # whisper:
+  #   image: onerahmet/openai-whisper-asr-webservice:latest-gpu
+  #   environment:
+  #     ASR_MODEL: small
+  #   ports:
+  #     - "9000:9000"
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+  #
+  app:
+    build:
+      context: .
+      args:
+        - DEV=true
     ports:
-      - "9000:9000"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+      - "8000:8000"
+    volumes:
+      - ./src:/src
+    command: >
+      sh -c "python ./voice_translator.py"
 
   voicevox:
     image: voicevox/voicevox_engine:nvidia-ubuntu20.04-latest
